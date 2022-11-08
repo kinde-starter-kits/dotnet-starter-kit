@@ -170,7 +170,7 @@ public async Task<IActionResult> Renew()
 
 ## Usage
 ```csharp
- // Don't forget to add "using Kinde;", all data objects models located ing this namespace 
+ // Don't forget to add "using Kinde;", all data objects models located in this namespace 
  var client = KindeClientFactory.Instance.GetOrCreate(correlationId, _appConfigurationProvider.Get());
  Users users = (Users)await client.GetUsersAsync(sort: Sort.Name_asc, page_size: 20, user_id: null, next_token: "next", cancellationToken: CancellationToken.None );
  foreach(User user in users){
