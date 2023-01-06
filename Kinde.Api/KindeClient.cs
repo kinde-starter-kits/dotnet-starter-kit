@@ -2,6 +2,7 @@
 using Kinde.Api.Flows;
 using Kinde.Api.Models.Configuration;
 using Kinde.Api.Models.Tokens;
+using Kinde.Api.Models.User;
 using Kinde.Api.Models.Utils;
 
 namespace Kinde
@@ -12,6 +13,7 @@ namespace Kinde
         public AuthotizationStates AuthotizationState { get { return authorizationFlow?.AuthotizationState ?? AuthotizationStates.None; } }
         protected IAuthorizationFlow authorizationFlow { get; set; }
         public OauthToken Token { get { return authorizationFlow.Token; } }
+        public bool IsAuthenticated { get { return Token != null && !Token.IsExpired; } }
         public IApplicationConfiguration IdentityProviderConfiguration { get; set; }
         public KindeClient(IApplicationConfiguration identityProviderConfiguration, HttpClient httpClient) : this(httpClient)
         {
@@ -24,7 +26,15 @@ namespace Kinde
         {
             authorizationFlow.AuthorizeRequest(request);
         }
-        public async Task Authorize(IAuthorizationConfiguration authorizationConfiguration, bool register = false)
+        public async Task Authorize(IAuthorizationConfiguration authorizationConfiguration)
+        {
+            await Authorize(authorizationConfiguration);
+        }
+        public async Task Register(IAuthorizationConfiguration authorizationConfiguration)
+        {
+            await Authorize(authorizationConfiguration, true);
+        }
+        protected async Task Authorize(IAuthorizationConfiguration authorizationConfiguration, bool register = false)
         {
             if (IdentityProviderConfiguration == null)
             {
@@ -75,11 +85,11 @@ namespace Kinde
 
         }
 
-        public async Task<object?> GetUserProfile()
+        public async Task<KindeSSOUser?> GetUserProfile()
         {
             if (authorizationFlow.RequiresRedirection)
             {
-                return await authorizationFlow.GetUserProfile(_httpClient);
+                return await authorizationFlow.GetUser(_httpClient);
             }
             else
             {

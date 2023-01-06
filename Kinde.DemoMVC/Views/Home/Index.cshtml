@@ -2,7 +2,7 @@
 @{
     Layout = null;
 }
-@model Newtonsoft.Json.Linq.JObject
+@model Kinde.Api.Models.User.KindeSSOUser
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +39,7 @@
                     <div class="js-user-avatar avatar"></div>
                     <div>
                         @if(Model!=null){
-                            <p class="js-user-name text-heading-2">@(Model["first_name"]) @(Model["last_name"]) </p>
+                            <p class="js-user-name text-heading-2">@(Model.GivenName) @(Model.FamilyName) </p>
                         }
                       
                         @Html.ActionLink("Sign out","Logout", "Home",null, new {@class="text-subtle"})

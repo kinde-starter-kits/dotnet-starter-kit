@@ -15,6 +15,7 @@ namespace Kinde.Api.Flows
         Task Renew(HttpClient httpClient);
 
         void AuthorizeRequest(HttpRequestMessage httpRequestMessage);
+        Task<KindeSSOUser> GetUser(HttpClient httpClient);
         Task<object> GetUserProfile(HttpClient httpClient);
     }
 }
