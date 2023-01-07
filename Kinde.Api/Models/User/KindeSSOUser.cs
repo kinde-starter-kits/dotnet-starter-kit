@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace Kinde.Api.Models.User
             }
             if (!string.IsNullOrEmpty(token.IdToken))
             {
+                Debug.WriteLine("Id token is empty, so user profile will be unavaliable");
                 user.IdToken = handler.ReadJwtToken(token.IdToken);
             }
 
@@ -41,10 +43,10 @@ namespace Kinde.Api.Models.User
 
         }
         public bool IsAuthorized { get { return !TokenSorce?.IsExpired ?? false; } }
-        public string Id { get { return IdToken.Payload["sub"]?.ToString() ?? AccessToken.Payload["sub"]?.ToString(); } }
-        public string GivenName { get { return IdToken.Payload["given_name"]?.ToString() ?? AccessToken.Payload["given_name"]?.ToString(); } }
-        public string FamilyName { get { return IdToken.Payload["family_name"]?.ToString() ?? AccessToken.Payload["family_name"]?.ToString(); } }
-        public string Email { get { return IdToken.Payload["email"]?.ToString() ?? AccessToken.Payload["email"]?.ToString(); } }
+        public string Id { get { return GetClaim<string>("sub"); } }
+        public string GivenName { get { return GetClaim<string>("given_name"); } }
+        public string FamilyName { get { return GetClaim<string>("family_name");  } }
+        public string Email { get { return GetClaim<string>("email"); } }
 
         public string? GetOrganisation()
         {
@@ -78,7 +80,15 @@ namespace Kinde.Api.Models.User
         }
         protected T? GetClaim<T>(string key)
         {
-            return ((T)AccessToken.Payload[key]) ?? ((T)IdToken.Payload[key]);
+            if(AccessToken?.Payload!=null &&    AccessToken.Payload.TryGetValue(key, out var accessTokenVal))
+            {
+                return (T)accessTokenVal;
+            }
+            if (IdToken?.Payload !=null && IdToken.Payload.TryGetValue(key, out var idTokenVal))
+            {
+                return (T)idTokenVal;
+            }
+            return default(T);
         }
 
         public class OrganisationPermission

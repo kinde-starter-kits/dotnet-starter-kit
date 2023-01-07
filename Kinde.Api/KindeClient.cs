@@ -28,13 +28,13 @@ namespace Kinde
         }
         public async Task Authorize(IAuthorizationConfiguration authorizationConfiguration)
         {
-            await Authorize(authorizationConfiguration);
+            await Authorize(authorizationConfiguration, false);
         }
         public async Task Register(IAuthorizationConfiguration authorizationConfiguration)
         {
             await Authorize(authorizationConfiguration, true);
         }
-        protected async Task Authorize(IAuthorizationConfiguration authorizationConfiguration, bool register = false)
+        protected async Task Authorize(IAuthorizationConfiguration authorizationConfiguration, bool register)
         {
             if (IdentityProviderConfiguration == null)
             {
