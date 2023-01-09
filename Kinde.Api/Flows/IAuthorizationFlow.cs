@@ -6,6 +6,8 @@ namespace Kinde.Api.Flows
 {
     public interface IAuthorizationFlow
     {
+
+        public KindeSSOUser User { get; }
         public bool RequiresRedirection { get; }
         AuthotizationStates AuthotizationState { get; set; }
         IUserActionResolver UserActionsResolver { get; init; }
@@ -15,7 +17,6 @@ namespace Kinde.Api.Flows
         Task Renew(HttpClient httpClient);
 
         void AuthorizeRequest(HttpRequestMessage httpRequestMessage);
-        Task<KindeSSOUser> GetUser(HttpClient httpClient);
         Task<object> GetUserProfile(HttpClient httpClient);
     }
 }

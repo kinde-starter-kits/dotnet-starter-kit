@@ -14,8 +14,8 @@ namespace Kinde.Api.Flows
         public AuthotizationStates AuthotizationState { get; set; }
         public TConfig Configuration { get; private set; }
         public IApplicationConfiguration IdentityProviderConfiguration { get; private set; }
-        public OauthToken? Token { get; private set; } = null!;
-
+        public OauthToken? Token { get; protected set; } = null!;
+        public KindeSSOUser User { get; protected set; }
         public virtual IUserActionResolver UserActionsResolver { get; init; } = new DefaultUserActionResolver();
 
         public virtual bool RequiresRedirection => true;
@@ -168,7 +168,6 @@ namespace Kinde.Api.Flows
 
         protected void SendCode(HttpClient client, Dictionary<string, string> parameters)
         {
-
             var response = ExecuteSync(client.PostAsync(IdentityProviderConfiguration.Domain + "/oauth2/token", BuildContent(parameters)));
             var content = ExecuteSync(response.Content.ReadAsStringAsync());
             if ((int)response.StatusCode < 400)
@@ -178,6 +177,7 @@ namespace Kinde.Api.Flows
                 {
                     AuthotizationState = AuthotizationStates.Authorized;
                     AddHeader(client, Token);
+                    User = KindeSSOUser.FromToken(this.Token);
                     RunRenew(client, CancellationTokenSorce.Token);
                 }
 
@@ -203,18 +203,7 @@ namespace Kinde.Api.Flows
         {
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token?.AccessToken);
         }
-        public virtual async Task<KindeSSOUser> GetUser(HttpClient httpClient)
-        { 
-            if (Token!=null)
-            {
-                return KindeSSOUser.FromToken(this.Token);
-            }
-            else
-            {
-                throw new ApplicationException("User is not authorized");
-            }
-
-        }
+      
         public virtual async Task<object> GetUserProfile(HttpClient httpClient)
         {
 

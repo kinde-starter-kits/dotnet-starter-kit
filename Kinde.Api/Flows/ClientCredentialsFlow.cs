@@ -33,9 +33,6 @@ namespace Kinde.Api.Flows
         {
             throw new NotImplementedException("Code is not applicable for this flow");
         }
-        public override Task<KindeSSOUser> GetUser(HttpClient httpClient)
-        {
-            return null;
-        }
+      
     }
 }

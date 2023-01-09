@@ -9,7 +9,9 @@ namespace Kinde
 {
     public partial class KindeClient
     {
+
         public static AuthorizationCodeStore<string, string> CodeStore = new AuthorizationCodeStore<string, string>();
+        public KindeSSOUser User { get { return authorizationFlow?.User; } }
         public AuthotizationStates AuthotizationState { get { return authorizationFlow?.AuthotizationState ?? AuthotizationStates.None; } }
         protected IAuthorizationFlow authorizationFlow { get; set; }
         public OauthToken Token { get { return authorizationFlow.Token; } }
@@ -85,17 +87,10 @@ namespace Kinde
 
         }
 
-        public async Task<KindeSSOUser?> GetUserProfile()
+        public async Task<object?> GetUserProfile()
         {
-            if (authorizationFlow.RequiresRedirection)
-            {
-                return await authorizationFlow.GetUser(_httpClient);
-            }
-            else
-            {
-                return null;
-            }
-           
+            return await authorizationFlow.GetUserProfile(_httpClient);
+
         }
 
         public async Task<string> Logout()

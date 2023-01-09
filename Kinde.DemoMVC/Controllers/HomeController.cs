@@ -30,9 +30,9 @@ namespace Kinde.DemoMVC.Controllers
                 if(client.AuthotizationState == Kinde.Api.Enums.AuthotizationStates.Authorized)
                 {
                     ViewBag.Authorized = true;
-                    var model = await client.GetUserProfile();
+                  
                     
-                    return View("Index", model);
+                    return View("Index", client.User);
                 }
               
             }

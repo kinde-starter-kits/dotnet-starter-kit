@@ -14,8 +14,7 @@ namespace Kinde.Api.Models.User
 {
     public class KindeSSOUser
     {
-
-        protected OauthToken TokenSorce { get; set; }
+        protected OauthToken TokenSource { get; set; }
         public JwtSecurityToken AccessToken { get; set; }
         public JwtSecurityToken IdToken { get; set; }
         public static KindeSSOUser FromToken(OauthToken token)
@@ -34,7 +33,7 @@ namespace Kinde.Api.Models.User
             }
 
 
-            user.TokenSorce = token;
+            user.TokenSource = token;
             return user;
 
         }
@@ -42,7 +41,7 @@ namespace Kinde.Api.Models.User
         {
 
         }
-        public bool IsAuthorized { get { return !TokenSorce?.IsExpired ?? false; } }
+        public bool IsAuthorized { get { return !TokenSource?.IsExpired ?? false; } }
         public string Id { get { return GetClaim<string>("sub"); } }
         public string GivenName { get { return GetClaim<string>("given_name"); } }
         public string FamilyName { get { return GetClaim<string>("family_name");  } }
