@@ -181,7 +181,7 @@ public async Task<IActionResult> Renew()
 
 ### User profile
 
-Note, that some of claims and properties will be unavaliable if scope 'profile' wasn't used wi]hile authorizing. In this case null will be returned.
+Note, that some of claims and properties will be unavaliable if scope 'profile' wasn't used while authorizing. In this case null will be returned.
 ```csharp
                 var client = KindeClientFactory.Instance.GetOrCreate(correlationId, _appConfigurationProvider.Get());
                  user = client.User;
