@@ -30,9 +30,9 @@ namespace Kinde.DemoMVC.Controllers
                 if(client.AuthotizationState == Kinde.Api.Enums.AuthotizationStates.Authorized)
                 {
                     ViewBag.Authorized = true;
-                    var model = await client.GetUserProfile();
+                  
                     
-                    return View("Index", model);
+                    return View("Index", client.User);
                 }
               
             }
@@ -87,7 +87,7 @@ namespace Kinde.DemoMVC.Controllers
                 HttpContext.Session.SetString("KindeCorrelationId", correlationId);
             }
             var client = KindeClientFactory.Instance.GetOrCreate(correlationId, _appConfigurationProvider.Get());
-            await client.Authorize(_authConfigurationProvider.Get(), true);
+            await client.Register(_authConfigurationProvider.Get());
             if (client.AuthotizationState == Api.Enums.AuthotizationStates.UserActionsNeeded)
             {
                 return Redirect(await client.GetRedirectionUrl(correlationId));
