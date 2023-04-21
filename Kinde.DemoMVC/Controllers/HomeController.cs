@@ -27,7 +27,7 @@ namespace Kinde.DemoMVC.Controllers
             if (HttpContext.Session.GetString("KindeCorrelationId") != null)
             {
                 var client = KindeClientFactory.Instance.Get(HttpContext.Session.GetString("KindeCorrelationId"));
-                if(client.AuthotizationState == Kinde.Api.Enums.AuthotizationStates.Authorized)
+                if(client.AuthotizationState == Api.Enums.AuthorizationStates.Authorized)
                 {
                     ViewBag.Authorized = true;
                   
@@ -54,7 +54,7 @@ namespace Kinde.DemoMVC.Controllers
             }
             var client = KindeClientFactory.Instance.GetOrCreate(correlationId, _appConfigurationProvider.Get());
             await client.Authorize(_authConfigurationProvider.Get());
-            if (client.AuthotizationState == Api.Enums.AuthotizationStates.UserActionsNeeded)
+            if (client.AuthotizationState == Api.Enums.AuthorizationStates.UserActionsNeeded)
             {
                 return Redirect(await client.GetRedirectionUrl(correlationId));
             }
@@ -88,7 +88,7 @@ namespace Kinde.DemoMVC.Controllers
             }
             var client = KindeClientFactory.Instance.GetOrCreate(correlationId, _appConfigurationProvider.Get());
             await client.Register(_authConfigurationProvider.Get());
-            if (client.AuthotizationState == Api.Enums.AuthotizationStates.UserActionsNeeded)
+            if (client.AuthotizationState == Api.Enums.AuthorizationStates.UserActionsNeeded)
             {
                 return Redirect(await client.GetRedirectionUrl(correlationId));
             }

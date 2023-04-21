@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 
 namespace Kinde.DemoMVC.Authorization
 {
-    public class KindeAuthorizationFilter: IAsyncAuthorizationFilter
+    public class KindeAuthorizationFilter : IAsyncAuthorizationFilter
     {
-     
+
         private readonly IAuthorizationConfigurationProvider _authConfigurationProvider;
         private readonly IApplicationConfigurationProvider _appConfigurationProvider;
         private IAuthorizationConfiguration _configuration;
@@ -24,7 +24,7 @@ namespace Kinde.DemoMVC.Authorization
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             bool hasAllowAnonymous = context.ActionDescriptor.EndpointMetadata
-                                 .Any(em => em.GetType() == typeof(AllowAnonymousAttribute)); 
+                                 .Any(em => em.GetType() == typeof(AllowAnonymousAttribute));
             if (hasAllowAnonymous) return;
 
             _configuration = _authConfigurationProvider.Get();
@@ -37,9 +37,9 @@ namespace Kinde.DemoMVC.Authorization
                 correlationId = Guid.NewGuid().ToString();
                 context.HttpContext.Session.SetString("KindeCorrelationId", correlationId);
             }
-        
+
             var client = KindeClientFactory.Instance.GetOrCreate(correlationId, appConfiguration);
-            if (client.AuthotizationState == AuthotizationStates.Authorized)
+            if (client.AuthotizationState == AuthorizationStates.Authorized)
             {
                 //congrats, all is good, check if identity exists and return
                 //var id = await client.GetUserProfile();
@@ -48,39 +48,37 @@ namespace Kinde.DemoMVC.Authorization
                     context.HttpContext.Session.SetString("KindeProfile", JsonConvert.SerializeObject(new object(), Formatting.Indented));
                 }
 
-              
+
                 return;
             }
-            if (client.AuthotizationState == AuthotizationStates.None)
+            if (client.AuthotizationState == AuthorizationStates.None)
             {
                 //means we didn't even started auth flow
                 await client.Authorize(_configuration);
-                if (client.AuthotizationState == AuthotizationStates.UserActionsNeeded)
+                if (client.AuthotizationState == AuthorizationStates.UserActionsNeeded)
                 {
-                    
+
                     context.Result = new RedirectResult(await client.GetRedirectionUrl(correlationId));
                     return;
                 }
-                else if (client.AuthotizationState == AuthotizationStates.Authorized)
+                else if (client.AuthotizationState == AuthorizationStates.Authorized)
                 {
                     context.HttpContext.Session.SetString("KindeProfile", JsonConvert.SerializeObject(new object(), Formatting.Indented));
-                   
+
                     return;
                 }
 
             }
-            if (client.AuthotizationState == AuthotizationStates.UserActionsNeeded)
+            if (client.AuthotizationState == AuthorizationStates.UserActionsNeeded)
             {
                 if (callbackUrl.Contains(context.HttpContext.Request.Host.Value) && callbackUrl.Contains(context.HttpContext.Request.Path.Value))
                 {
                     var code = context.HttpContext.Request.Query["code"];
                     var state = context.HttpContext.Request.Query["state"];
                     KindeClient.OnCodeRecieved(code, state);
-                    if (client.AuthotizationState == AuthotizationStates.Authorized)
+                    if (client.AuthotizationState == AuthorizationStates.Authorized)
                     {
-                        var id = await client.GetUserProfile();
-                        context.HttpContext.Session.SetString("KindeProfile", JsonConvert.SerializeObject(id, Formatting.Indented));
-                       
+                        context.HttpContext.Session.SetString("KindeProfile", JsonConvert.SerializeObject(client.User, Formatting.Indented));
                     }
                     else
                     {
