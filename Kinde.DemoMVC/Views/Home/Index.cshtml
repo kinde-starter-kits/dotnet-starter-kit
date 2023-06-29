@@ -1,8 +1,7 @@
-﻿@using Kinde.Api.Models.Tokens
+﻿@model Kinde.Api.Model.UserProfileV2
 @{
     Layout = null;
 }
-@model Kinde.Api.Models.User.KindeSSOUser
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,73 +19,72 @@
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-
     <header>
         <nav class="nav container">
             <h1 class="text-display-3">KindeAuth</h1>
-            @if (ViewBag.Authorized == null|| !(bool)ViewBag.Authorized)
+            @if (ViewBag.Authorized == null || !(bool)ViewBag.Authorized)
             {
                 <div class="js-logged-out-view">
-                    @Html.ActionLink("Sign in","Login", "Home",null, new {@class="btn btn-ghost sign-in-btn"})
-                    @Html.ActionLink("Sign up","Signup", "Home",null, new {@class="btn btn-dark"})
-
+                    @Html.ActionLink("Sign in", "Login", "Home", null, new {@class="btn btn-ghost sign-in-btn"})
+                    @Html.ActionLink("Sign up", "Signup", "Home", null, new {@class="btn btn-dark"})
                 </div>
             }
             else
             {
-
                 <div class="profile-blob">
-                    <div class="js-user-avatar avatar"></div>
+                    <img class="js-user-avatar avatar" src="@Model.Picture" alt="avatar" />
                     <div>
-                        @if(Model!=null){
-                            <p class="js-user-name text-heading-2">@(Model.GivenName) @(Model.FamilyName) </p>
-                        }
-                      
-                        @Html.ActionLink("Sign out","Logout", "Home",null, new {@class="text-subtle"})
-                        @Html.ActionLink("Renew token","Renew", "Home",null, new {@class="text-subtle"})
+                        <p class="js-user-name text-heading-2">@(Model.GivenName) @(Model.FamilyName) </p>
+
+                        @Html.ActionLink("Sign out", "Logout", "Home", null, new {@class="text-subtle"})
+                        @Html.ActionLink("Renew token", "Renew", "Home", null, new {@class="text-subtle"})
                     </div>
                 </div>
-
             }
-
-
-
         </nav>
     </header>
 
     <main>
         <div class="container">
+            @if (ViewBag.Authorized == null || !(bool)ViewBag.Authorized)
+            {
+                <div class="js-logged-out-view">
+                    <div class="card hero">
+                        <p class="text-display-1 hero-title">
+                            Let's start authenticating <br /> with KindeAuth
+                        </p>
+                        <p class="text-body-1 hero-tagline">Configure your app</p>
 
-            <div class="js-logged-out-view">
-                <div class="card hero">
-                    <p class="text-display-1 hero-title">
-                        Let's start authenticating <br /> with KindeAuth
-                    </p>
-                    <p class="text-body-1 hero-tagline">Configure your app</p>
+                        <a href="https://kinde.com/docs/sdks/javascript-sdk"
+                           target="_blank"
+                           rel="noreferrer"
+                           class="btn btn-light btn-big">
+                            Go to docs
+                        </a>
 
-                    <a href="https://kinde.com/docs/sdks/javascript-sdk"
-                       target="_blank"
-                       rel="noreferrer"
-                       class="btn btn-light btn-big">
-                        Go to docs
-                    </a>
-
+                    </div>
                 </div>
-            </div>
-
-            <div class="js-logged-in-view" hidden>
-                <div class="card start-hero">
-                    <p class="text-body-2 start-hero-intro">Woohoo!</p>
-                    <p class="text-display-2">
-                        Your authentication is all sorted.
-                        <br />
-                        Build the important stuff.
-                    </p>
+            }
+            else
+            {
+                <div class="js-logged-in-view">
+                    <div class="card start-hero">
+                        <p class="text-body-2 start-hero-intro">Woohoo!</p>
+                        <p class="text-display-2">
+                            Your authentication is all sorted.
+                            <br />
+                            Build the important stuff.
+                        </p>
+                    </div>
+                    <section class="next-steps-section">
+                        <h2 class="text-heading-1">Next steps for you</h2>
+                        <div class="next-steps-section-btn">
+                            @Html.ActionLink("User details", "UserDetails", "Home", null, new {@class="btn btn-dark"})
+                            @Html.ActionLink("Helper functions", "HelperFunctions", "Home", null, new {@class="btn btn-dark"})
+                        </div>
+                    </section>
                 </div>
-                <section class="next-steps-section">
-                    <h2 class="text-heading-1">Next steps for you</h2>
-                </section>
-            </div>
+            }
         </div>
     </main>
 
@@ -108,26 +106,3 @@
 
 </body>
 </html>
-
-@*@if(Model == null){
-    <div>
-        <div class="btn-group">
-        @(Html.ActionLink("Login","Login", "Home"))
-    </div>
-    </div>
-}else{
-<div class="text-center">
-
-    <dl style="max-width:800px">
-        <dd>Remaining time</dd>
-        <dt>@Html.DisplayFor(model=>model.Duration)</dt>
-        <dd>@Html.LabelFor(model=>model.AccessToken)</dd>
-        <dt style="word-break:break-all; word-wrap: break-word;">@Html.DisplayFor(model=>model.AccessToken)</dt>
-        <dd>Identity</dd>
-        <dt>@Context.Session.GetString("KindeProfile")</dt>
-    </dl>
-</div>
-
-
-}*@
-
