@@ -148,7 +148,7 @@ namespace Kinde.DemoMVC.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            var correlationId = HttpContext.Session?.GetString("KindeCorrelationId") ?? ;
+            var correlationId = HttpContext.Session?.GetString("KindeCorrelationId");
             if (string.IsNullOrEmpty(correlationId))
             {
                 return RedirectToAction("Index");
