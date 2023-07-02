@@ -1,0 +1,94 @@
+﻿@model Kinde.DemoMVC.Models.UserDetailViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kinde - .NET Starter kit</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no" />
+    <style>
+        [hidden] {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <header>
+        <nav class="nav container">
+            <h1 class="text-display-3">KindeAuth</h1>
+            <div class="profile-blob">
+                <img class="js-user-avatar avatar" src="@Model.UserDetail?.Picture" alt="avatar" />
+                <div>
+                    <p class="js-user-name text-heading-2">@(Model.UserDetail?.GivenName) @(Model.UserDetail?.FamilyName) </p>
+                    @Html.ActionLink("Sign out", "Logout", "Home", null, new {@class="text-subtle"})
+                    @Html.ActionLink("Renew token", "Renew", "Home", null, new {@class="text-subtle"})
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="js-logged-in-view">
+                <div class="card start-hero">
+                    <p class="text-display-2">
+                        User Details
+                    </p>
+                </div>
+
+                <div class="user-fields">
+                    <h3>Avatar</h3>
+                    <input title="picture" value="@Model.UserDetail?.Picture" />
+                </div>
+
+                <div class="user-fields">
+                    <h3>Given name</h3>
+                    <input title="given name" value="@Model.UserDetail?.GivenName" />
+                </div>
+
+                <div class="user-fields">
+                    <h3>Family name</h3>
+                    <input title="given name" value="@Model.UserDetail?.FamilyName" />
+                </div>
+
+                <div class="user-fields">
+                    <h3>Email</h3>
+                    <input title="email" value="@Model.UserDetail?.Email" />
+                </div>
+
+                <div class="user-fields">
+                    <h3>Access token</h3>
+                    <textarea title="email" rows="10">@Model.Token</textarea>
+                </div>
+
+                <div class="user-fields">
+                    @Html.ActionLink("Back to Home", "Index", "Home", null, new {@class="btn btn-dark"})
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <strong class="text-heading-2">KindeAuth</strong>
+            <p class="footer-tagline text-body-3">
+                Visit our
+                <a class="link" href="https://kinde.com/docs">
+                    help center
+                </a>
+            </p>
+
+            <small class="text-subtle">
+                © 2022 KindeAuth, Inc. All rights reserved
+            </small>
+        </div>
+    </footer>
+
+</body>
+</html>
