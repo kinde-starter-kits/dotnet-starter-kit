@@ -15,7 +15,7 @@ The starter kit supports configuration using values from defined in the `appseti
 Configuration example:
 ```json
 "ApplicationConfiguration": {
-    "Domain": "https://testauth.kinde.com",
+    "Domain": "<your_kinde_domain>",
     "ReplyUrl": "https://localhost:7165/home/callback",
     "LogoutUrl":  "https://localhost:7165/home"
   },
@@ -23,10 +23,10 @@ Configuration example:
     "ConfigurationType": "Kinde.Api.Models.Configuration.PKCES256Configutation",
     "Configuration": {
       "State": null,
-      "ClientId": "reg@live",
+      "ClientId": "<your_kinde_client_id",
       "Scope": "openid offline",
       "GrantType": "code id_token token",
-      "ClientSecret": "<my secret>"
+      "ClientSecret": "<your_kinde_client_secret>"
     }
   },
 ```
