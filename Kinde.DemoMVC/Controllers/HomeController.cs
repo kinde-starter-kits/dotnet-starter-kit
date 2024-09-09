@@ -41,7 +41,17 @@ namespace Kinde.DemoMVC.Controllers
                     var oauthApi = new OAuthApi(client);
                     var user = await oauthApi.GetUserProfileV2Async();
 
-                    return View("Index", user);
+                    return View("Index", new BaseViewModel()
+                    {
+                        UserDetail = new KindeUserDetail()
+                        {
+                            Email = user.Email,
+                            FamilyName = user.FamilyName,
+                            GivenName = user.GivenName,
+                            Id = user.Id,
+                            Picture = user.Picture
+                        }
+                    });
                 }
             }
             return View("Index");

@@ -1,22 +1,19 @@
-﻿<ul class="navbar-nav">
-    @if (Context.User.Identity.IsAuthenticated)
+﻿@if (ViewBag.Authorized == null || !(bool)ViewBag.Authorized)
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
+    <div class="js-logged-out-view">
+        @Html.ActionLink("Sign in", "Login", "Home", null, new {@class="btn btn-ghost sign-in-btn"})
+        @Html.ActionLink("Sign up", "Signup", "Home", null, new {@class="btn btn-dark"})
+    </div>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+    <div class="profile-blob">
+        <img class="js-user-avatar avatar" src="@Model.UserDetail.Picture" alt="avatar" />
+        <div>
+            <p class="js-user-name text-heading-2">@(Model.UserDetail.GivenName) @(Model.UserDetail.FamilyName) </p>
+
+            @Html.ActionLink("Sign out", "Logout", "Home", null, new {@class="text-subtle"})
+            @Html.ActionLink("Renew token", "Renew", "Home", null, new {@class="text-subtle"})
+        </div>
+    </div>
 }
-</ul>
