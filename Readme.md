@@ -1,4 +1,4 @@
-# Kinde Starter Kit - .Net
+# Kinde Starter Kit - .NET
 
 ## Register an account on Kinde
 
@@ -13,48 +13,45 @@ The starter kit supports configuration using values from defined in the `appseti
 
 Set the following variables with the details from the Kinde `App Keys` page
 
-> Domain - The token host value
+> Authority - Your Kinde domain
 >
-> ClientSecret - The client secret
+> ClientId - Your client Id
 >
-> ClientId - The client Id
+> ClientSecret - Your client secret
 
 e.g:
 ```json
-"ApplicationConfiguration": {
-    "Domain": "<your_kinde_domain>",
-    "ReplyUrl": "https://localhost:7165/home/callback",
-    "LogoutUrl":  "https://localhost:7165/home"
-  },
-  "DefaultAuthorizationConfiguration": {
-    "ConfigurationType": "Kinde.Api.Models.Configuration.PKCES256Configutation",
-    "Configuration": {
-      "State": null,
-      "ClientId": "<your_kinde_client_id",
-      "Scope": "openid offline",
-      "GrantType": "code id_token token",
-      "ClientSecret": "<your_kinde_client_secret>"
+  "Authentication": {
+    "Schemes": {
+      "OpenIdConnect": {
+        "Authority": "<your_kinde_domain>",
+        "ClientId": "<your_client_id>",
+        "ClientSecret": "<your_client_secret>",
+        "MapInboundClaims": false,
+        "ResponseType": "code",
+        "SignedOutRedirectUri": "/"
+      }
     }
-  },
+  }
 ```
 
 ## Set your Callback and Logout URLs
 
-Your user will be redirected to Kinde to authenticate. After they have logged in or registered they will be redirected back to your .Net application.
+Your user will be redirected to Kinde to authenticate. After they have logged in or registered they will be redirected back to your .NET application.
 
 You need to specify in Kinde which url you would like your user to be redirected to in order to authenticate your app.
 
-On the App Keys page set ` Allowed callback URLs` to `https://localhost:7165/home/callback`
+On the App Keys page set ` Allowed callback URLs` to `https://localhost:7165/signin-oidc`
 
 > Important! This is required for your users to successfully log in to your app.
 
-You will also need to set the url they will be redirected to upon logout. Set the `Allowed logout redirect URLs` to https://localhost:7165/home.
+You will also need to set the url they will be redirected to upon logout. Set the `Allowed logout redirect URLs` to `https://localhost:7165/signout-callback-oidc`.
 
 ## Start the app
 
-Start your server through Visaul Studio and navigate to `http://localhost:7165`.
+Start your server through Visual Studio and navigate to `http://localhost:7165`.
 
-Click on `Sign up` and register your first user for your business !
+Click on `Sign up` and register your first user for your business!
 
 ## View users in Kinde
 

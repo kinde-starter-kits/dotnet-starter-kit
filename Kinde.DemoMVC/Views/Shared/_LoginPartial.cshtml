@@ -1,19 +1,22 @@
-﻿@if (ViewBag.Authorized == null || !(bool)ViewBag.Authorized)
-{
-    <div class="js-logged-out-view">
-        @Html.ActionLink("Sign in", "Login", "Home", null, new {@class="btn btn-ghost sign-in-btn"})
-        @Html.ActionLink("Sign up", "Signup", "Home", null, new {@class="btn btn-dark"})
-    </div>
-}
-else
-{
-    <div class="profile-blob">
-        <img class="js-user-avatar avatar" src="@Model.UserDetail.Picture" alt="avatar" />
-        <div>
-            <p class="js-user-name text-heading-2">@(Model.UserDetail.GivenName) @(Model.UserDetail.FamilyName) </p>
+@using System.Security.Claims
+<ul class="navbar-nav">
+    @if (Context.User.Identity.IsAuthenticated)
+    {
+        <div class="profile-blob">
+            <img class="js-user-avatar avatar" src="@Context.User.FindFirstValue("picture")" alt="avatar" />
+            <div>
+                <p class="js-user-name text-heading-2">@(Context.User.FindFirstValue("given_name")) @(Context.User.FindFirstValue("family_name")) </p>
 
-            @Html.ActionLink("Sign out", "Logout", "Home", null, new {@class="text-subtle"})
-            @Html.ActionLink("Renew token", "Renew", "Home", null, new {@class="text-subtle"})
+                @Html.ActionLink("Sign out", "Logout", "Home", null, new {@class="text-subtle"})
+            </div>
         </div>
-    </div>
-}
+    }
+    else
+    {
+        <div class="js-logged-out-view">
+            @Html.ActionLink("Sign in", "Login", "Home", null, new {@class="btn btn-ghost sign-in-btn"})
+            @Html.ActionLink("Sign up", "Signup", "Home", null, new {@class="btn btn-dark"})
+        </div>
+    }
+</ul>
+
