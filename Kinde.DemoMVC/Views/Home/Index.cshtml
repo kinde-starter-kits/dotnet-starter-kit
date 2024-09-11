@@ -1,11 +1,28 @@
-﻿@model BaseViewModel
-
-@if (ViewBag.Authorized == null || !(bool)ViewBag.Authorized)
+@if (Context.User.Identity.IsAuthenticated)
+{
+    <div class="js-logged-in-view">
+        <div class="card start-hero">
+            <p class="text-body-2 start-hero-intro">Woohoo!</p>
+            <p class="text-display-2">
+                Your authentication is all sorted.
+                <br />
+                Build the important stuff.
+            </p>
+        </div>
+        <section class="next-steps-section">
+            <h2 class="text-heading-1">Next steps for you</h2>
+            <div class="next-steps-section-btn">
+                @Html.ActionLink("User details", "UserDetails", "Home", null, new { @class = "btn btn-dark" })
+            </div>
+        </section>
+    </div>
+}
+else
 {
     <div class="js-logged-out-view">
         <div class="card hero">
             <p class="text-display-1 hero-title">
-                Let's start authenticating <br/> with KindeAuth
+                Let's start authenticating <br /> with KindeAuth
             </p>
             <p class="text-body-1 hero-tagline">Configure your app</p>
 
@@ -17,25 +34,5 @@
             </a>
 
         </div>
-    </div>
-}
-else
-{
-    <div class="js-logged-in-view">
-        <div class="card start-hero">
-            <p class="text-body-2 start-hero-intro">Woohoo!</p>
-            <p class="text-display-2">
-                Your authentication is all sorted.
-                <br/>
-                Build the important stuff.
-            </p>
-        </div>
-        <section class="next-steps-section">
-            <h2 class="text-heading-1">Next steps for you</h2>
-            <div class="next-steps-section-btn">
-                @Html.ActionLink("User details", "UserDetails", "Home", null, new { @class = "btn btn-dark" })
-                @Html.ActionLink("Helper functions", "HelperFunctions", "Home", null, new { @class = "btn btn-dark" })
-            </div>
-        </section>
     </div>
 }

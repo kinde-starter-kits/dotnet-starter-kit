@@ -1,6 +1,8 @@
-﻿namespace Kinde.DemoMVC.Models;
+﻿using Kinde.Api.Models.User;
 
-public class UserDetailViewModel : BaseViewModel
+namespace Kinde.DemoMVC.Models;
+
+public class UserDetailViewModel
 {
-    public string? Token { get; set; }
+    public KindeUserDetail UserDetail { get; set; }
 }
