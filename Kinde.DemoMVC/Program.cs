@@ -1,12 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions
-{
-    ContentRootPath = Directory.GetCurrentDirectory(),
-    WebRootPath = Directory.GetCurrentDirectory() + "\\wwwroot"
-});
-builder.WebHost.UseIISIntegration();
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddAuthentication(options =>
