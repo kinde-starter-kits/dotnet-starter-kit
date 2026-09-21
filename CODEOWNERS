@@ -1,1 +1,4 @@
 * @kinde-starter-kits/giants-kinde
+*.csproj @kinde-starter-kits/sdk-engineers
+packages.lock.json @kinde-starter-kits/sdk-engineers
+**/packages.lock.json @kinde-starter-kits/sdk-engineers
